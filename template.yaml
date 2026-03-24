@@ -14,6 +14,26 @@ Globals:
 
 Resources:
 
+  # --- Lambdas ---
+  JobWorkerFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: handler.lambda_handler
+      CodeUri: src/job_worker/
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref JobsTable
+        - S3CrudPolicy:
+            BucketName: !Ref ResultsBucket
+        - SQSPollerPolicy:
+            QueueName: !GetAtt JobsQueue.QueueName
+      Events:
+        SQSTrigger:
+          Type: SQS
+          Properties:
+            Queue: !GetAtt JobsQueue.Arn
+            BatchSize: 1
+
   # --- DynamoDB ---
   JobsTable:
     Type: AWS::DynamoDB::Table
