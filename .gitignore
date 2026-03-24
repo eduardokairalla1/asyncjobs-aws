@@ -1,0 +1,12 @@
+# SAM build artifacts
+.aws-sam/
+samconfig.toml
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+*.egg-info/
+
+# Env vars
+.env
