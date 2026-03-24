@@ -18,6 +18,7 @@ import uuid
 from models import JobItem
 from typing import Any
 from typing import Dict
+from typing import Optional
 
 
 # --- CODE ---
@@ -55,3 +56,32 @@ def create_job(body: Dict[str, Any]) -> Dict[str, Any]:
 
     # return the job ID and initial status to the client
     return response(202, {'job_id': job_id, 'status': 'pending'})
+
+
+def get_job(job_id: str) -> Dict[str, Any]:
+    """
+    Retrieves the status of a job.
+
+    :param job_id: The ID of the job to retrieve.
+
+    :return: A response dictionary to be returned to API Gateway.
+    """
+
+    # query the DynamoDB for the job item
+    result: Optional[JobItem] = JOBS_TABLE.get_item(Key={'job_id': job_id})
+
+    # check if the job item exists
+    item = result.get('Item')
+
+    # job not found: return a 404 response
+    if item is None:
+        return response(404, {'error': 'job not found'})
+
+    # return the job status and details to the client
+    return response(200, {
+        'job_id': item['job_id'],
+        'status': item['status'],
+        'result_url': item.get('result_url'),
+        'created_at': item['created_at'],
+        'updated_at': item['updated_at'],
+    })
