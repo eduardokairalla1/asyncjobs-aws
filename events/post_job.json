@@ -1,0 +1,9 @@
+{
+  "httpMethod": "POST",
+  "path": "/jobs",
+  "headers": {
+    "Content-Type": "application/json"
+  },
+  "pathParameters": null,
+  "body": "{\"type\": \"sales_report\", \"data\": {\"user_id\": \"usr_123\", \"period\": \"2024-Q4\"}}"
+}

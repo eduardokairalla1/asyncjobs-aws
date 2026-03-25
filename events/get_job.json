@@ -1,0 +1,9 @@
+{
+  "httpMethod": "GET",
+  "path": "/jobs/test-id-123",
+  "headers": {},
+  "pathParameters": {
+    "id": "test-id-123"
+  },
+  "body": null
+}
